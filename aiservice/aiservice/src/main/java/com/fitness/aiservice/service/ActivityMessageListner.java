@@ -1,5 +1,8 @@
 package com.fitness.aiservice.service;
+import com.fitness.activityservice.service.ActivityService;
 import com.fitness.aiservice.model.Activity;
+import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.repository.RecommendationRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +15,14 @@ import org.springframework.stereotype.Service;
 @Data
 @RequiredArgsConstructor
 public class ActivityMessageListner {
+    private final ActivityAIService aiService;
+    private final RecommendationRepository recommendationRepository;
 
     @RabbitListener(queues = "activity.queue")
     public void processActivity(Activity activity){
         log.info("Received Activity for Processing: {}", activity.getId());
+//            log.info("Generated Recommendation: {}", aiService.generateRecommendation(activity));
+        Recommendation recommendation = aiService.generateRecommendation(activity);
+        recommendationRepository.save(recommendation);
     }
 }
