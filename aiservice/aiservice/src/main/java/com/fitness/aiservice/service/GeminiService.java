@@ -26,7 +26,7 @@ public class GeminiService {
         Map<String, Object> requestBody = Map.of("contents", new Object[]{
                 Map.of("parts", new Object[]{
                         Map.of("text", question),
-                }),
+                }),  // Gets the actual recommendations from AI using Web client by taking the expected format the ai
         });
 
         String response= webClient.post()
